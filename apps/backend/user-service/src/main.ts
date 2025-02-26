@@ -1,20 +1,8 @@
-import { NestFactory } from "@nestjs/core";
-import { MicroserviceOptions, Transport } from "@nestjs/microservices";
-import { UserModule } from "./user.module";
-import { join } from "path";
-const bootstrap = async () => {
-  const app = await NestFactory.createMicroservice<MicroserviceOptions>(
-    UserModule,
-    {
-      transport: Transport.GRPC,
-      options: {
-        package: "user",
-        protoPath: join(__dirname, "../proto/user.proto"),
-      },
-    }
-  );
-  await app.listen();
-  console.log("User Service is running .....");
-};
+import { NestFactory } from '@nestjs/core';
+import { UserModule } from './modules/user.module';
 
+async function bootstrap() {
+  const app = await NestFactory.create(UserModule);
+  await app.listen(process.env.PORT ?? 3000);
+}
 bootstrap();
